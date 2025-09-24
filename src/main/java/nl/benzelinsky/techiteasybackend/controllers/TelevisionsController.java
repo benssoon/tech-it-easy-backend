@@ -1,5 +1,6 @@
 package nl.benzelinsky.techiteasybackend.controllers;
 
+import nl.benzelinsky.techiteasybackend.exceptions.RecordNotFoundException;
 import nl.benzelinsky.techiteasybackend.model.Television;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/tvs")
+@RequestMapping("/televisions")
 public class TelevisionsController {
 
     //temp database
@@ -33,24 +34,27 @@ public class TelevisionsController {
 
     //GET request 1 tv
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getTelevisionById(@PathVariable int id) {
+    public ResponseEntity<Television> getTelevisionById(@PathVariable int id) {
         if (this.televisionMap.containsKey(id)) {
             return ResponseEntity.ok(this.televisionMap.get(id));
         }
         else {
-            return ResponseEntity.notFound().build();
+            throw new RecordNotFoundException("ID cannot be found");
+            //return ResponseEntity.notFound().build();
         }
     }
 
     //PUT request 1 tv
-    @PutMapping
-    public ResponseEntity<String> updateTelevision() {
-        return ResponseEntity.ok("updated television");
+    @PutMapping("/{id}")
+    public ResponseEntity<Television> updateTelevision(@PathVariable int id, @RequestBody Television newTv) {
+        Television tv = this.televisionMap.get(id);
+        tv.setName(newTv.getName());
+        return ResponseEntity.ok(tv);
     }
 
     //DELETE request 1 tv
     @DeleteMapping
-    public ResponseEntity<Object> deleteTelevison() {
+    public ResponseEntity<String> deleteTelevison() {
         return ResponseEntity.ok("deleted television");
     }
 }
