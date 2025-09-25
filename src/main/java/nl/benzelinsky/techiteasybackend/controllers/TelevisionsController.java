@@ -2,23 +2,21 @@ package nl.benzelinsky.techiteasybackend.controllers;
 
 import nl.benzelinsky.techiteasybackend.exceptions.RecordNotFoundException;
 import nl.benzelinsky.techiteasybackend.models.Television;
-import nl.benzelinsky.techiteasybackend.repositories.TelevisionsRepository;
+import nl.benzelinsky.techiteasybackend.repositories.TelevisionRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/televisions")
 public class TelevisionsController {
 
-    private final TelevisionsRepository repo;
+    private final TelevisionRepository repo;
 
-    public TelevisionsController(TelevisionsRepository repo) {
+    public TelevisionsController(TelevisionRepository repo) {
         this.repo = repo;
     }
 
@@ -56,23 +54,55 @@ public class TelevisionsController {
     public ResponseEntity<Television> updateTelevision(@PathVariable int id, @RequestBody Television newTelevision) {
         Optional<Television> tv = this.repo.findById(id);
         Television television = tv.get();
-        
-        television.setType(newTelevision.getType());
-        television.setBrand(newTelevision.getBrand());
-        television.setName(newTelevision.getName());
-        television.setPrice(newTelevision.getPrice());
-        television.setAvailableSize(newTelevision.getAvailableSize());
-        television.setRefreshRate(newTelevision.getRefreshRate());
-        television.setScreenType(newTelevision.getScreenType());
-        television.setScreenQuality(newTelevision.getScreenQuality());
-        television.setSmartTv(newTelevision.getSmartTv());
-        television.setWifi(newTelevision.getWifi());
-        television.setVoiceControl(newTelevision.getVoiceControl());
-        television.setHdr(newTelevision.getHdr());
-        television.setBluetooth(newTelevision.getBluetooth());
-        television.setAmbiLight(newTelevision.getAmbiLight());
-        television.setOriginalStock(newTelevision.getOriginalStock());
-        television.setSold(newTelevision.getSold());
+
+        if (newTelevision.getType() != null) {
+            television.setType(newTelevision.getType());
+        }
+        if (newTelevision.getBrand() != null) {
+            television.setBrand(newTelevision.getBrand());
+        }
+        if (newTelevision.getName() != null) {
+            television.setName(newTelevision.getName());
+        }
+        if (newTelevision.getPrice() != null) {
+            television.setPrice(newTelevision.getPrice());
+        }
+        if (newTelevision.getAvailableSize() != null) {
+            television.setAvailableSize(newTelevision.getAvailableSize());
+        }
+        if (newTelevision.getRefreshRate() != 0) {
+            television.setRefreshRate(newTelevision.getRefreshRate());
+        }
+        if (newTelevision.getScreenType() != null) {
+            television.setScreenType(newTelevision.getScreenType());
+        }
+        if (newTelevision.getScreenQuality() != null) {
+            television.setScreenQuality(newTelevision.getScreenQuality());
+        }
+        if (newTelevision.getSmartTv() != null) {
+            television.setSmartTv(newTelevision.getSmartTv());
+        }
+        if (newTelevision.getWifi() != null) {
+            television.setWifi(newTelevision.getWifi());
+        }
+        if (newTelevision.getVoiceControl() != null) {
+            television.setVoiceControl(newTelevision.getVoiceControl());
+        }
+        if (newTelevision.getHdr() != null) {
+            television.setHdr(newTelevision.getHdr());
+        }
+        if (newTelevision.getBluetooth() != null) {
+            television.setBluetooth(newTelevision.getBluetooth());
+        }
+        if (newTelevision.getAmbiLight() != null) {
+            television.setAmbiLight(newTelevision.getAmbiLight());
+        }
+        if (newTelevision.getOriginalStock() != null) {
+            television.setOriginalStock(newTelevision.getOriginalStock());
+        }
+        if (newTelevision.getSold() != null) {
+            television.setSold(newTelevision.getSold());
+        }
 
         return ResponseEntity.ok(this.repo.save(television));
     }
