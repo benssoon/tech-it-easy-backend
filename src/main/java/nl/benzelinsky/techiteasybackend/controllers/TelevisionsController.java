@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +27,11 @@ public class TelevisionsController {
     public ResponseEntity<Object> createTelevision(@RequestBody Television television) {
         this.repo.save(television);
 
-        return new ResponseEntity<>(television, HttpStatus.CREATED);
-        //return ResponseEntity.created(null).body(television);
+        URI location = URI.create("/televisions/" + television.getId());
+
+        // Give the Response a location, based on the id of the new Television and show the
+        // Television in the body.
+        return ResponseEntity.created(location).body(television);
     }
 
     //GET request all tvs
@@ -39,7 +43,6 @@ public class TelevisionsController {
     //GET request 1 tv
     @GetMapping("/{id}")
     public ResponseEntity<Television> getTelevisionById(@PathVariable int id) {
-        // Check if this needs to be Integer!!!
         Optional<Television> television = this.repo.findById(id);
         if (television.isPresent()) {
             return ResponseEntity.ok(television.get());
@@ -55,6 +58,9 @@ public class TelevisionsController {
         Optional<Television> tv = this.repo.findById(id);
         Television television = tv.get();
 
+        //region Change values
+        /*Change only the values that are not null
+        (i.e. whichever ones the client decides to change).*/
         if (newTelevision.getType() != null) {
             television.setType(newTelevision.getType());
         }
@@ -103,13 +109,17 @@ public class TelevisionsController {
         if (newTelevision.getSold() != null) {
             television.setSold(newTelevision.getSold());
         }
+        //endregion
 
         return ResponseEntity.ok(this.repo.save(television));
     }
 
     //DELETE request 1 tv
-    @DeleteMapping
-    public ResponseEntity<String> deleteTelevison() {
-        return ResponseEntity.ok("deleted television");
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Television> deleteTelevision(@PathVariable int id) {
+
+        this.repo.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
