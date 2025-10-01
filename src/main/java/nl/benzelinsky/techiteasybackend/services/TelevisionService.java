@@ -17,12 +17,13 @@ public class TelevisionService {
     }
 
     public TelevisionOutputDto createTelevision(TelevisionInputDto tvInDto) {
-        Television t = TelevisionMapper.toEntity(tvInDto);
+        Television tv = TelevisionMapper.toEntity(tvInDto);
+        this.repo.save(tv);
 
-        return t;
+        return TelevisionMapper.toOutputDto(tv);
     }
 
-    public TelevisionOutputDto getTelevisionById() {
+    /*public TelevisionOutputDto getTelevisionById() {
 
-    }
+    }*/
 }

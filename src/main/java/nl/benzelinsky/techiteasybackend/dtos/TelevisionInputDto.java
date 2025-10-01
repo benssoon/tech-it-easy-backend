@@ -1,9 +1,6 @@
 package nl.benzelinsky.techiteasybackend.dtos;
 
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 public class TelevisionInputDto {
 
@@ -12,15 +9,15 @@ public class TelevisionInputDto {
     public String type;
 
     @NotBlank
-    @Size(min = 5, max = 64)
+    @Size(min = 3, max = 64)
     public String brand;
 
     @NotBlank
     @Size(min=3, max = 128)
     public String name;
 
-    @NotBlank
-    @DecimalMin(value = "0.00")
+    @NotNull
+    @Positive
     public Double price;
 
     @DecimalMin(value = "40.0")

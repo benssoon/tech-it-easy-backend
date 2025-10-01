@@ -33,6 +33,7 @@ public class TelevisionMapper {
 
         TelevisionOutputDto tvOutDto = new TelevisionOutputDto();
 
+        tvOutDto.id = tv.getId();
         tvOutDto.type = tv.getType();
         tvOutDto.brand = tv.getBrand();
         tvOutDto.name = tv.getName();

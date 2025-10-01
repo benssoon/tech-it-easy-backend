@@ -1,40 +1,41 @@
 package nl.benzelinsky.techiteasybackend.controllers;
 
-import nl.benzelinsky.techiteasybackend.exceptions.RecordNotFoundException;
+import jakarta.validation.Valid;
+import nl.benzelinsky.techiteasybackend.dtos.TelevisionInputDto;
+import nl.benzelinsky.techiteasybackend.dtos.TelevisionOutputDto;
 import nl.benzelinsky.techiteasybackend.models.Television;
-import nl.benzelinsky.techiteasybackend.repositories.TelevisionRepository;
+import nl.benzelinsky.techiteasybackend.services.TelevisionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/televisions")
-public class TelevisionsController {
+public class TelevisionController {
 
-    private final TelevisionRepository repo;
+    private final TelevisionService service;
 
-    public TelevisionsController(TelevisionRepository repo) {
-        this.repo = repo;
+    public TelevisionController(TelevisionService service) {
+        this.service = service;
     }
 
 
-    //POST request 1 tv
+    //POST request for 1 television
     @PostMapping
-    public ResponseEntity<Object> createTelevision(@RequestBody Television television) {
-        this.repo.save(television);
+    public ResponseEntity<TelevisionOutputDto> createTelevision(@Valid @RequestBody TelevisionInputDto tvInDto) {
+        TelevisionOutputDto tvOutDto = this.service.createTelevision(tvInDto);
 
-        URI location = URI.create("/televisions/" + television.getId());
-
+        URI location = URI.create("/televisions/" + tvOutDto.id);
         // Give the Response a location, based on the id of the new Television and show the
         // Television in the body.
-        return ResponseEntity.created(location).body(television);
+
+        return ResponseEntity.created(location).body(tvOutDto);
+        //return new ResponseEntity<>(tvOutDto, HttpStatus.CREATED);
     }
 
-    //GET request all tvs
+/*    //GET request all tvs
     @GetMapping
     public ResponseEntity<List<Television>> getAllTelevisions() {
         return ResponseEntity.ok(this.repo.findAll());
@@ -59,8 +60,8 @@ public class TelevisionsController {
         Television television = tv.get();
 
         //region Change values
-        /*Change only the values that are not null
-        (i.e. whichever ones the client decides to change).*/
+        *//*Change only the values that are not null
+        (i.e. whichever ones the client decides to change).*//*
         if (newTelevision.getType() != null) {
             television.setType(newTelevision.getType());
         }
@@ -121,5 +122,5 @@ public class TelevisionsController {
         this.repo.deleteById(id);
 
         return ResponseEntity.noContent().build();
-    }
+    }*/
 }
