@@ -14,7 +14,7 @@ INSERT INTO televisions (type,
                          ambi_light,
                          original_stock,
                          sold)
-VALUES ('big',
+VALUES ('big ONE',
         'Sony',
         'boob tube',
         2000,
