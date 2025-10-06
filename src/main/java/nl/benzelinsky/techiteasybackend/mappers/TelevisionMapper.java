@@ -1,5 +1,6 @@
 package nl.benzelinsky.techiteasybackend.mappers;
 
+import nl.benzelinsky.techiteasybackend.dtos.SalesTelevisionOutputDto;
 import nl.benzelinsky.techiteasybackend.dtos.TelevisionInputDto;
 import nl.benzelinsky.techiteasybackend.dtos.TelevisionOutputDto;
 import nl.benzelinsky.techiteasybackend.models.Television;
@@ -52,5 +53,16 @@ public class TelevisionMapper {
         tvOutDto.sold = tv.getSold();
 
         return tvOutDto;
+    }
+
+    public static SalesTelevisionOutputDto toSalesDto(Television tv) {
+        SalesTelevisionOutputDto salesDto = new SalesTelevisionOutputDto();
+
+        salesDto.id = tv.getId();
+        salesDto.price = tv.getPrice();
+        salesDto.originalStock = tv.getOriginalStock();
+        salesDto.sold = tv.getSold();
+
+        return salesDto;
     }
 }

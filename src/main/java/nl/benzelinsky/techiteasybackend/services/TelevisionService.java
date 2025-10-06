@@ -1,5 +1,6 @@
 package nl.benzelinsky.techiteasybackend.services;
 
+import nl.benzelinsky.techiteasybackend.dtos.SalesTelevisionOutputDto;
 import nl.benzelinsky.techiteasybackend.dtos.TelevisionInputDto;
 import nl.benzelinsky.techiteasybackend.dtos.TelevisionOutputDto;
 import nl.benzelinsky.techiteasybackend.exceptions.RecordNotFoundException;
@@ -43,15 +44,6 @@ public class TelevisionService {
                 .forEach((Television television) ->
                         allTelevisions.add(TelevisionMapper.toOutputDto(television)));
         return allTelevisions;
-    }
-
-    // Delete 1 television
-    public String deleteTelevisionById(int id) {
-        TelevisionOutputDto deletedTv = TelevisionMapper.toOutputDto(this.repo.findById(id)
-                .orElseThrow(() ->
-                        new RecordNotFoundException("Television not found.")));
-        this.repo.deleteById(id);
-        return deletedTv.name + " deleted.";
     }
 
     // Update 1 television
@@ -117,5 +109,23 @@ public class TelevisionService {
 
         this.repo.save(toUpdateTelevision);
         return TelevisionMapper.toOutputDto(toUpdateTelevision);
+    }
+
+    // Delete 1 television
+    public String deleteTelevisionById(int id) {
+        TelevisionOutputDto deletedTv = TelevisionMapper.toOutputDto(this.repo.findById(id)
+                .orElseThrow(() ->
+                        new RecordNotFoundException("Television not found.")));
+        this.repo.deleteById(id);
+        return deletedTv.name + " deleted.";
+    }
+
+    // Get sales info of all televisions
+    public List<SalesTelevisionOutputDto> getAllTelevisionsSalesInfo() {
+        List<SalesTelevisionOutputDto> allTelevisionsSalesInfo = new ArrayList<>();
+        this.repo.findAll()
+                .forEach((Television television) ->
+                        allTelevisionsSalesInfo.add(TelevisionMapper.toSalesDto(television)));
+        return allTelevisionsSalesInfo;
     }
 }

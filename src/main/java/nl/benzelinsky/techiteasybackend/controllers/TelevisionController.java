@@ -1,6 +1,7 @@
 package nl.benzelinsky.techiteasybackend.controllers;
 
 import jakarta.validation.Valid;
+import nl.benzelinsky.techiteasybackend.dtos.SalesTelevisionOutputDto;
 import nl.benzelinsky.techiteasybackend.dtos.TelevisionInputDto;
 import nl.benzelinsky.techiteasybackend.dtos.TelevisionOutputDto;
 import nl.benzelinsky.techiteasybackend.exceptions.RecordNotFoundException;
@@ -64,5 +65,12 @@ public class TelevisionController {
     public ResponseEntity<String> deleteTelevision(@PathVariable int id) {
 
         return ResponseEntity.ok(this.service.deleteTelevisionById(id));
+    }
+
+    //GET only sales info from all tvs
+    @GetMapping("/sales")
+    public ResponseEntity<List<SalesTelevisionOutputDto>> getAllTelevisionsSalesInfo() {
+        List<SalesTelevisionOutputDto> allTelevisionsSalesInfo = this.service.getAllTelevisionsSalesInfo();
+        return ResponseEntity.ok(allTelevisionsSalesInfo);
     }
 }
