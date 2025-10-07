@@ -54,7 +54,7 @@ public class TelevisionController {
 
     //PUT request 1 tv
     @PutMapping("/{id}")
-    public ResponseEntity<TelevisionOutputDto> updateTelevision(@PathVariable int id, @RequestBody TelevisionInputDto toUpdateTelevision) {
+    public ResponseEntity<TelevisionOutputDto> updateTelevision(@PathVariable int id, @Valid @RequestBody TelevisionInputDto toUpdateTelevision) {
 
         return ResponseEntity.ok(this.service.updateTelevision(id, toUpdateTelevision));
     }

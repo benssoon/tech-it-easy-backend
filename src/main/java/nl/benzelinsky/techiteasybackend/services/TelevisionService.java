@@ -53,10 +53,39 @@ public class TelevisionService {
                 .orElseThrow(() ->
                         new RecordNotFoundException("Television not found."));
 
+
+        //region Change values
+
+        toUpdateTelevision.setType(newTelevision.getType());
+        toUpdateTelevision.setBrand(newTelevision.getBrand());
+        toUpdateTelevision.setName(newTelevision.getName());
+        toUpdateTelevision.setPrice(newTelevision.getPrice());
+        toUpdateTelevision.setAvailableSize(newTelevision.getAvailableSize());
+        toUpdateTelevision.setRefreshRate(newTelevision.getRefreshRate());
+        toUpdateTelevision.setScreenType(newTelevision.getScreenType());
+        toUpdateTelevision.setScreenQuality(newTelevision.getScreenQuality());
+        toUpdateTelevision.setSmartTv(newTelevision.getSmartTv());
+        toUpdateTelevision.setWifi(newTelevision.getWifi());
+        toUpdateTelevision.setVoiceControl(newTelevision.getVoiceControl());
+        toUpdateTelevision.setHdr(newTelevision.getHdr());
+        toUpdateTelevision.setBluetooth(newTelevision.getBluetooth());
+        toUpdateTelevision.setAmbiLight(newTelevision.getAmbiLight());
+        toUpdateTelevision.setOriginalStock(newTelevision.getOriginalStock());
+        toUpdateTelevision.setSold(newTelevision.getSold());
+        //endregion
+
+        this.repo.save(toUpdateTelevision);
+        return TelevisionMapper.toOutputDto(toUpdateTelevision);
+    }
+
+
+/*
+// This is more like a PATCH request!
         //region Change values
 
         // Change only the values that are not null
         // (i.e. whichever ones the client decides to change).
+
         if (newTelevision.getType() != null) {
             toUpdateTelevision.setType(newTelevision.getType());
         }
@@ -106,10 +135,8 @@ public class TelevisionService {
             toUpdateTelevision.setSold(newTelevision.getSold());
         }
         //endregion
+*/
 
-        this.repo.save(toUpdateTelevision);
-        return TelevisionMapper.toOutputDto(toUpdateTelevision);
-    }
 
     // Delete 1 television
     public String deleteTelevisionById(int id) {
