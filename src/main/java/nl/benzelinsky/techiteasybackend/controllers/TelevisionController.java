@@ -47,14 +47,14 @@ public class TelevisionController {
 
     //GET request 1 tv
     @GetMapping("/{id}")
-    public ResponseEntity<TelevisionOutputDto> getTelevisionById(@PathVariable int id) {
+    public ResponseEntity<TelevisionOutputDto> getTelevisionById(@PathVariable Long id) {
         
         return ResponseEntity.ok(this.service.getTelevisionById(id));
     }
 
     //PUT request 1 tv
     @PutMapping("/{id}")
-    public ResponseEntity<TelevisionOutputDto> updateTelevision(@PathVariable int id, @Valid @RequestBody TelevisionInputDto toUpdateTelevision) {
+    public ResponseEntity<TelevisionOutputDto> updateTelevision(@PathVariable Long id, @Valid @RequestBody TelevisionInputDto toUpdateTelevision) {
 
         return ResponseEntity.ok(this.service.updateTelevision(id, toUpdateTelevision));
     }
@@ -62,7 +62,7 @@ public class TelevisionController {
 
     //DELETE request 1 tv
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTelevision(@PathVariable int id) {
+    public ResponseEntity<String> deleteTelevision(@PathVariable Long id) {
 
         return ResponseEntity.ok(this.service.deleteTelevisionById(id));
     }

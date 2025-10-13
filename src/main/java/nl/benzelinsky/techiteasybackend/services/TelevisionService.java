@@ -30,7 +30,7 @@ public class TelevisionService {
     }
 
     // Get 1 television
-    public TelevisionOutputDto getTelevisionById(int id) {
+    public TelevisionOutputDto getTelevisionById(Long id) {
         return TelevisionMapper.toOutputDto(
                 this.repo.findById(id)
                         .orElseThrow(() ->
@@ -47,7 +47,7 @@ public class TelevisionService {
     }
 
     // Update 1 television
-    public TelevisionOutputDto updateTelevision(int id, TelevisionInputDto tvInDto) {
+    public TelevisionOutputDto updateTelevision(Long id, TelevisionInputDto tvInDto) {
         Television newTelevision = TelevisionMapper.toEntity(tvInDto);
         Television toUpdateTelevision = this.repo.findById(id)
                 .orElseThrow(() ->
@@ -139,7 +139,7 @@ public class TelevisionService {
 
 
     // Delete 1 television
-    public String deleteTelevisionById(int id) {
+    public String deleteTelevisionById(Long id) {
         TelevisionOutputDto deletedTv = TelevisionMapper.toOutputDto(this.repo.findById(id)
                 .orElseThrow(() ->
                         new RecordNotFoundException("Television not found.")));
