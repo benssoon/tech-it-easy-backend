@@ -26,17 +26,6 @@ public class Television {
     private Integer originalStock;
     private Integer sold;
 
-    public Television() {
-    }
-
-    public Television(Long id, String type, String brand, String name, Double price) {
-        this.id = id;
-        this.type = type;
-        this.brand = brand;
-        this.name = name;
-        this.price = price;
-    }
-
     public Long getId() {
         return this.id;
     }
