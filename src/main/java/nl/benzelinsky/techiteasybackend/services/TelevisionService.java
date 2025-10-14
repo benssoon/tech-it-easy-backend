@@ -15,16 +15,16 @@ import java.util.List;
 @Service
 public class TelevisionService {
 
-    private final TelevisionRepository repo;
+    private final TelevisionRepository repository;
 
     public TelevisionService(TelevisionRepository repo) {
-        this.repo = repo;
+        this.repository = repo;
     }
 
     // Create a new television
     public TelevisionOutputDto createTelevision(TelevisionInputDto tvInDto) {
         Television tv = TelevisionMapper.toEntity(tvInDto);
-        this.repo.save(tv);
+        this.repository.save(tv);
 
         return TelevisionMapper.toOutputDto(tv);
     }
@@ -32,7 +32,7 @@ public class TelevisionService {
     // Get 1 television
     public TelevisionOutputDto getTelevisionById(Long id) {
         return TelevisionMapper.toOutputDto(
-                this.repo.findById(id)
+                this.repository.findById(id)
                         .orElseThrow(() ->
                                 new RecordNotFoundException("Television not found.")));
     }
@@ -40,42 +40,41 @@ public class TelevisionService {
     // Get all televisions
     public List<TelevisionOutputDto> getAllTelevisions() {
         List<TelevisionOutputDto> allTelevisions = new ArrayList<>();
-        this.repo.findAll()
-                .forEach((Television television) ->
+        this.repository.findAll()
+                .forEach(television ->
                         allTelevisions.add(TelevisionMapper.toOutputDto(television)));
         return allTelevisions;
     }
 
     // Update 1 television
     public TelevisionOutputDto updateTelevision(Long id, TelevisionInputDto tvInDto) {
-        Television newTelevision = TelevisionMapper.toEntity(tvInDto);
-        Television toUpdateTelevision = this.repo.findById(id)
+        Television toUpdate = this.repository.findById(id)
                 .orElseThrow(() ->
                         new RecordNotFoundException("Television not found."));
 
 
         //region Change values
 
-        toUpdateTelevision.setType(newTelevision.getType());
-        toUpdateTelevision.setBrand(newTelevision.getBrand());
-        toUpdateTelevision.setName(newTelevision.getName());
-        toUpdateTelevision.setPrice(newTelevision.getPrice());
-        toUpdateTelevision.setAvailableSize(newTelevision.getAvailableSize());
-        toUpdateTelevision.setRefreshRate(newTelevision.getRefreshRate());
-        toUpdateTelevision.setScreenType(newTelevision.getScreenType());
-        toUpdateTelevision.setScreenQuality(newTelevision.getScreenQuality());
-        toUpdateTelevision.setSmartTv(newTelevision.getSmartTv());
-        toUpdateTelevision.setWifi(newTelevision.getWifi());
-        toUpdateTelevision.setVoiceControl(newTelevision.getVoiceControl());
-        toUpdateTelevision.setHdr(newTelevision.getHdr());
-        toUpdateTelevision.setBluetooth(newTelevision.getBluetooth());
-        toUpdateTelevision.setAmbiLight(newTelevision.getAmbiLight());
-        toUpdateTelevision.setOriginalStock(newTelevision.getOriginalStock());
-        toUpdateTelevision.setSold(newTelevision.getSold());
+        toUpdate.setType(tvInDto.type);
+        toUpdate.setBrand(tvInDto.brand);
+        toUpdate.setName(tvInDto.name);
+        toUpdate.setPrice(tvInDto.price);
+        toUpdate.setAvailableSize(tvInDto.availableSize);
+        toUpdate.setRefreshRate(tvInDto.refreshRate);
+        toUpdate.setScreenType(tvInDto.screenType);
+        toUpdate.setScreenQuality(tvInDto.screenQuality);
+        toUpdate.setSmartTv(tvInDto.smartTv);
+        toUpdate.setWifi(tvInDto.wifi);
+        toUpdate.setVoiceControl(tvInDto.voiceControl);
+        toUpdate.setHdr(tvInDto.hdr);
+        toUpdate.setBluetooth(tvInDto.bluetooth);
+        toUpdate.setAmbiLight(tvInDto.ambiLight);
+        toUpdate.setOriginalStock(tvInDto.originalStock);
+        toUpdate.setSold(tvInDto.sold);
         //endregion
 
-        this.repo.save(toUpdateTelevision);
-        return TelevisionMapper.toOutputDto(toUpdateTelevision);
+        this.repository.save(toUpdate);
+        return TelevisionMapper.toOutputDto(toUpdate);
     }
 
 
@@ -140,17 +139,16 @@ public class TelevisionService {
 
     // Delete 1 television
     public String deleteTelevisionById(Long id) {
-        TelevisionOutputDto deletedTv = TelevisionMapper.toOutputDto(this.repo.findById(id)
-                .orElseThrow(() ->
-                        new RecordNotFoundException("Television not found.")));
-        this.repo.deleteById(id);
-        return deletedTv.name + " deleted.";
+        Television toDelete = this.repository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("Television not found."));
+        this.repository.deleteById(id);
+        return toDelete.getName() + " deleted.";
     }
 
     // Get sales info of all televisions
     public List<SalesTelevisionOutputDto> getAllTelevisionsSalesInfo() {
         List<SalesTelevisionOutputDto> allTelevisionsSalesInfo = new ArrayList<>();
-        this.repo.findAll()
+        this.repository.findAll()
                 .forEach((Television television) ->
                         allTelevisionsSalesInfo.add(TelevisionMapper.toSalesDto(television)));
         return allTelevisionsSalesInfo;

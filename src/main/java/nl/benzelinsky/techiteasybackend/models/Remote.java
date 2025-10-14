@@ -1,12 +1,13 @@
 package nl.benzelinsky.techiteasybackend.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "remotes")
 public class Remote {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String compatibleWith;
     private String batteryType;
