@@ -7,7 +7,9 @@ import nl.benzelinsky.techiteasybackend.mappers.WallBracketMapper;
 import nl.benzelinsky.techiteasybackend.models.Television;
 import nl.benzelinsky.techiteasybackend.models.WallBracket;
 import nl.benzelinsky.techiteasybackend.repositories.WallBracketRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class WallBracketService {
 
     private final WallBracketRepository repository;

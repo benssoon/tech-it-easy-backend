@@ -15,6 +15,16 @@ public class Remote {
     private String brand;
     private Double price;
     private Integer originalStock;
+    @OneToOne(mappedBy = "remote")
+    private Television television;
+
+    public Television getTelevision() {
+        return television;
+    }
+
+    public void setTelevision(Television television) {
+        this.television = television;
+    }
 
     public Long getId() {
         return this.id;

@@ -1,6 +1,7 @@
 package nl.benzelinsky.techiteasybackend.controllers;
 
 import jakarta.validation.Valid;
+import nl.benzelinsky.techiteasybackend.dtos.IdInputDto;
 import nl.benzelinsky.techiteasybackend.dtos.SalesTelevisionOutputDto;
 import nl.benzelinsky.techiteasybackend.dtos.TelevisionInputDto;
 import nl.benzelinsky.techiteasybackend.dtos.TelevisionOutputDto;
@@ -57,6 +58,12 @@ public class TelevisionController {
         return ResponseEntity.ok(this.service.updateTelevision(id, dtoIn));
     }
 
+    // Couple Television with Remote
+    @PutMapping("/{televisionId}/remote")
+    public ResponseEntity<TelevisionOutputDto> assignRemoteToTelevision(@PathVariable Long televisionId,
+                                                                        @Valid @RequestBody IdInputDto remoteIdDto) {
+        return ResponseEntity.ok(this.service.assignRemoteToTelevision(televisionId, remoteIdDto.id));
+    }
 
     //DELETE request 1 tv
     @DeleteMapping("/{id}")

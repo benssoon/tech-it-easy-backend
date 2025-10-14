@@ -5,7 +5,9 @@ import nl.benzelinsky.techiteasybackend.dtos.TelevisionInputDto;
 import nl.benzelinsky.techiteasybackend.dtos.TelevisionOutputDto;
 import nl.benzelinsky.techiteasybackend.exceptions.RecordNotFoundException;
 import nl.benzelinsky.techiteasybackend.mappers.TelevisionMapper;
+import nl.benzelinsky.techiteasybackend.models.Remote;
 import nl.benzelinsky.techiteasybackend.models.Television;
+import nl.benzelinsky.techiteasybackend.repositories.RemoteRepository;
 import nl.benzelinsky.techiteasybackend.repositories.TelevisionRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +17,19 @@ import java.util.List;
 @Service
 public class TelevisionService {
 
-    private final TelevisionRepository repository;
+    private final TelevisionRepository televisionRepository;
+    private final RemoteRepository remoteRepository;
 
-    public TelevisionService(TelevisionRepository repo) {
-        this.repository = repo;
+    public TelevisionService(TelevisionRepository televisionRepository,
+                             RemoteRepository remoteRepository) {
+        this.televisionRepository = televisionRepository;
+        this.remoteRepository = remoteRepository;
     }
 
     // Create a new television
     public TelevisionOutputDto createTelevision(TelevisionInputDto tvInDto) {
         Television tv = TelevisionMapper.toEntity(tvInDto);
-        this.repository.save(tv);
+        this.televisionRepository.save(tv);
 
         return TelevisionMapper.toOutputDto(tv);
     }
@@ -32,7 +37,7 @@ public class TelevisionService {
     // Get 1 television
     public TelevisionOutputDto getTelevisionById(Long id) {
         return TelevisionMapper.toOutputDto(
-                this.repository.findById(id)
+                this.televisionRepository.findById(id)
                         .orElseThrow(() ->
                                 new RecordNotFoundException("Television not found.")));
     }
@@ -40,7 +45,7 @@ public class TelevisionService {
     // Get all televisions
     public List<TelevisionOutputDto> getAllTelevisions() {
         List<TelevisionOutputDto> allTelevisions = new ArrayList<>();
-        this.repository.findAll()
+        this.televisionRepository.findAll()
                 .forEach(television ->
                         allTelevisions.add(TelevisionMapper.toOutputDto(television)));
         return allTelevisions;
@@ -48,7 +53,7 @@ public class TelevisionService {
 
     // Update 1 television
     public TelevisionOutputDto updateTelevision(Long id, TelevisionInputDto tvInDto) {
-        Television toUpdate = this.repository.findById(id)
+        Television toUpdate = this.televisionRepository.findById(id)
                 .orElseThrow(() ->
                         new RecordNotFoundException("Television not found."));
 
@@ -73,7 +78,7 @@ public class TelevisionService {
         toUpdate.setSold(tvInDto.sold);
         //endregion
 
-        this.repository.save(toUpdate);
+        this.televisionRepository.save(toUpdate);
         return TelevisionMapper.toOutputDto(toUpdate);
     }
 
@@ -139,18 +144,34 @@ public class TelevisionService {
 
     // Delete 1 television
     public String deleteTelevisionById(Long id) {
-        Television toDelete = this.repository.findById(id)
-                .orElseThrow(() -> new RecordNotFoundException("Television not found."));
-        this.repository.deleteById(id);
+        Television toDelete = this.televisionRepository.findById(id)
+                .orElseThrow(() ->
+                        new RecordNotFoundException("Television not found."));
+        this.televisionRepository.deleteById(id);
         return toDelete.getName() + " deleted.";
     }
 
     // Get sales info of all televisions
     public List<SalesTelevisionOutputDto> getAllTelevisionsSalesInfo() {
         List<SalesTelevisionOutputDto> allTelevisionsSalesInfo = new ArrayList<>();
-        this.repository.findAll()
+        this.televisionRepository.findAll()
                 .forEach((Television television) ->
                         allTelevisionsSalesInfo.add(TelevisionMapper.toSalesDto(television)));
         return allTelevisionsSalesInfo;
+    }
+
+    public TelevisionOutputDto assignRemoteToTelevision(Long televisionId, Long remoteId) {
+        Television television = this.televisionRepository.findById(televisionId)
+                .orElseThrow(() ->
+                        new RecordNotFoundException("Television does not exist yet."));
+        Remote remote = this.remoteRepository.findById(remoteId)
+                .orElseThrow(() ->
+                        new RecordNotFoundException("Remote does not exist yet."));
+        television.setRemote(remote);
+        remote.setTelevision(television);
+        this.televisionRepository.save(television);
+        this.remoteRepository.save(remote);
+        //return television.getName() + " coupled with " + remote.getName();
+        return TelevisionMapper.toOutputDto(television);
     }
 }
