@@ -25,16 +25,16 @@ public class Television {
     private Boolean ambiLight;
     private Integer originalStock;
     private Integer sold;
+    @OneToOne
+    @JoinColumn(name = "remote_id")
+    private Remote remote;
 
-    public Television() {
+    public Remote getRemote() {
+        return remote;
     }
 
-    public Television(Long id, String type, String brand, String name, Double price) {
-        this.id = id;
-        this.type = type;
-        this.brand = brand;
-        this.name = name;
-        this.price = price;
+    public void setRemote(Remote remote) {
+        this.remote = remote;
     }
 
     public Long getId() {
