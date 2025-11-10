@@ -1,12 +1,16 @@
 package nl.benzelinsky.techiteasybackend.security;
 
+import nl.benzelinsky.techiteasybackend.filter.JwtRequestFilter;
 import nl.benzelinsky.techiteasybackend.repositories.UserRepository;
+import nl.benzelinsky.techiteasybackend.services.CustomUserDetailsService;
+import nl.benzelinsky.techiteasybackend.utils.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,19 +18,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.sql.DataSource;
-
 @Configuration
+@EnableWebSecurity
 public class SpringSecurityConfig {
 
 private final JwtUtil jwtUtil;
 private final UserRepository userRepository;
-private final DataSource dataSource;
+private final CustomUserDetailsService customUserDetailsService;
 
-public SpringSecurityConfig(JwtUtil jwtUtil, UserRepository userRepo, DataSource dataSource) {
+public SpringSecurityConfig(JwtUtil jwtUtil, UserRepository userRepo, CustomUserDetailsService ud) {
     this.jwtUtil = jwtUtil;
     this.userRepository = userRepo;
-    this.dataSource = dataSource;
+    this.customUserDetailsService = ud;
 }
     /*@Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
@@ -42,7 +45,7 @@ public SpringSecurityConfig(JwtUtil jwtUtil, UserRepository userRepo, DataSource
 
         authenticationManagerBuilder
                 .jdbcAuthentication()
-                .dataSource(dataSource);
+                .dataSource(this.customUserDetailsService);
 
         return authenticationManagerBuilder.build();
     }

@@ -1,4 +1,4 @@
-package nl.benzelinsky.techiteasybackend.security;
+package nl.benzelinsky.techiteasybackend.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
