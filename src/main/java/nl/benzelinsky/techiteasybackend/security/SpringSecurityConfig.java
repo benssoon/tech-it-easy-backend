@@ -22,71 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/*@Configuration
-@EnableWebSecurity
-public class SpringSecurityConfig {
-
-private final JwtUtil jwtUtil;
-private final UserRepository userRepository;
-private final CustomUserDetailsService customUserDetailsService;
-private final UserDetailsService userDetailsService;
-
-public SpringSecurityConfig(JwtUtil jwtUtil, UserRepository userRepo, CustomUserDetailsService customUd, UserDetailsService ud) {
-    this.jwtUtil = jwtUtil;
-    this.userRepository = userRepo;
-    this.customUserDetailsService = customUd;
-    this.userDetailsService = ud;
-}
-    */
-/*@Bean
-    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        var auth = new DaoAuthenticationProvider();
-        auth.setPasswordEncoder(passwordEncoder);
-        auth.setUserDetailsService(userDetailsService);
-        return new ProviderManager(auth);
-    }*//*
-
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
-        var auth = new DaoAuthenticationProvider();
-        auth.setPasswordEncoder(passwordEncoder);
-        auth.setUserDetailsService(customUserDetailsService);
-        return new ProviderManager(auth);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService(this.us);
-    }
-
-    @Bean
-    public SecurityFilterChain filter (HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/televisions").permitAll()
-                        .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
-                        .anyRequest().denyAll()
-                )
-                .sessionManagement(sesh -> sesh.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .csrf(csrf -> csrf.disable())
-                .addFilterBefore(
-                        new JwtRequestFilter(jwtUtil, userDetailsService()),
-                        UsernamePasswordAuthenticationFilter.class
-                );
-        return http.build();
-    }
-}*/
-
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
-    /*TODO inject customUserDetailService en jwtRequestFilter*/
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
 
@@ -126,7 +65,7 @@ public class SpringSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                                 auth
-                                        // Wanneer je deze uncomments, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
+                                        // Wanneer je onderstaande uncomment, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
                                         //.requestMatchers("/**").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
                                         .requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
@@ -144,7 +83,7 @@ public class SpringSecurityConfig {
                                         /*TODO voeg de antmatchers toe voor admin(post en delete) en user (overige)*/
                                         .requestMatchers("/authenticated").authenticated()
                                         .requestMatchers("/authenticate").permitAll()/*alleen dit punt mag toegankelijk zijn voor niet ingelogde gebruikers*/
-                                        .anyRequest().denyAll() /*Deze voeg je altijd als laatste toe, om een default beveiliging te hebben voor eventuele vergeten endpoints of endpoints die je later toevoegd. */
+                                        .anyRequest().denyAll() /*Deze voeg je altijd als laatste toe, om een default beveiliging te hebben voor eventuele vergeten endpoints of endpoints die je later toevoegt. */
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

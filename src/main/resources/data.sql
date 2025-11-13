@@ -30,3 +30,18 @@ VALUES ('big ONE',
         true,
         20,
         10);
+
+INSERT INTO users (
+                   username,
+                   password,
+                   enabled,
+                   email)
+VALUES ('ben',
+        '1234',
+        true,
+        'ben@techiteasy.nl');
+
+INSERT INTO roles (username,
+                         role)
+VALUES ('ben',
+        'ADMIN')

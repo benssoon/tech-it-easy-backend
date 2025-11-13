@@ -19,7 +19,6 @@ import java.security.Principal;
 @RestController
 public class AuthenticationController {
 
-    /*TODO inject authentionManager, userDetailService en jwtUtil*/
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;

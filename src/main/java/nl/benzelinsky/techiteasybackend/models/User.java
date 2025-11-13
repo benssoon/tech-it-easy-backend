@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @Column(nullable = false, unique = true)
@@ -24,12 +25,12 @@ public class User {
     private String email;
 
     @OneToMany(
-            targetEntity = Authority.class,
+            targetEntity = Role.class,
             mappedBy = "username",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER)
-    private Set<Authority> authorities = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     public String getUsername() {
         return this.username;
@@ -71,14 +72,14 @@ public class User {
         this.email = email;
     }
 
-    public Set<Authority> getAuthorities() {
-        return this.authorities;
+    public Set<Role> getRoles() {
+        return this.roles;
     }
 
-    public void addAuthority(Authority authority) {
-        this.authorities.add(authority);
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
-    public void removeAuthority(Authority authority) {
-        this.authorities.remove(authority);
+    public void removeRole(Role role) {
+        this.roles.remove(role);
     }
 }

@@ -1,7 +1,7 @@
 package nl.benzelinsky.techiteasybackend.dtos;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import nl.benzelinsky.techiteasybackend.models.Authority;
+import nl.benzelinsky.techiteasybackend.models.Role;
 
 import java.util.Set;
 
@@ -12,5 +12,5 @@ public class UserOutputDto {
     public String apiKey;
     public String email;
     @JsonSerialize
-    public Set<Authority> authorities;
+    public Set<Role> roles;
 }

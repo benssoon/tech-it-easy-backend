@@ -29,7 +29,7 @@ public class UserMapper {
         dtoOut.enabled = user.isEnabled();
         dtoOut.apiKey = user.getApikey();
         dtoOut.email = user.getEmail();
-        dtoOut.authorities = user.getAuthorities();
+        dtoOut.roles = user.getRoles();
 
         return dtoOut;
     }

@@ -1,19 +1,15 @@
 package nl.benzelinsky.techiteasybackend.services;
 
 import nl.benzelinsky.techiteasybackend.dtos.UserOutputDto;
-import nl.benzelinsky.techiteasybackend.models.Authority;
-import nl.benzelinsky.techiteasybackend.models.User;
-import nl.benzelinsky.techiteasybackend.repositories.UserRepository;
+import nl.benzelinsky.techiteasybackend.models.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -31,10 +27,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         String password = userDto.password;
 
-        Set<Authority> authorities = userDto.authorities;
+        Set<Role> roles = userDto.roles;
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (Authority authority: authorities) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
+        for (Role role : roles) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
 
         return new org.springframework.security.core.userdetails.User(username, password, grantedAuthorities);
