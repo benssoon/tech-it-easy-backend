@@ -19,12 +19,12 @@ import java.util.Set;
 @Service
 public class UserService {
 
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository/*, PasswordEncoder passwordEncoder*/) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        //this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserOutputDto> getUsers() {
@@ -54,7 +54,7 @@ public class UserService {
     public String createUser(UserInputDto userInputDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         userInputDto.apiKey = randomString;
-        userInputDto.password = passwordEncoder.encode(userInputDto.password);
+        //userInputDto.password = passwordEncoder.encode(userInputDto.password);
         User newUser = this.userRepository.save(UserMapper.toEntity(userInputDto));
         return newUser.getUsername();
     }

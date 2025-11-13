@@ -31,15 +31,15 @@ VALUES ('big ONE',
         20,
         10);
 
-INSERT INTO users (
-                   username,
-                   password,
-                   enabled,
-                   email)
-VALUES (('ben', '1234', true, 'ben@techiteasy.nl')
-       ('ellen', '1234', true, 'ellen@techiteasy.nl'));
+INSERT INTO users (username, password, enabled, email)
+VALUES ('ben', '1234', true, 'ben@techiteasy.nl'),
+        ('ellen', '1234', true, 'ellen@techiteasy.nl'),
+        ('bob', '1234', true, 'bob@techiteasy.nl'),
+        ('saskia', '1234', true, 'saskia@techiteasy.nl');
 
-INSERT INTO roles (username,
-                   role)
-VALUES (('ben', 'ROLE_ADMIN'),
-        ('ellen', 'ROLE_USER'))
+INSERT INTO roles (username, role)
+VALUES ('ben', 'ROLE_ADMIN'),
+        ('ben', 'ROLE_USER'),
+        ('ellen', 'ROLE_USER'),
+        ('bob', 'ROLE_USER'),
+        ('saskia', 'ROLE_USER');

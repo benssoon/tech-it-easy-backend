@@ -11,6 +11,7 @@ public class Role implements Serializable {
     @Id
     @Column(nullable = false)
     private String username;
+
     @Id
     @Column(nullable = false)
     private String role;
