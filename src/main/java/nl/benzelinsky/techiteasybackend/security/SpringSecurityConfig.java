@@ -28,31 +28,22 @@ public class SpringSecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
+    private final PasswordEncoder passwordEncoder;
 
-    public SpringSecurityConfig(CustomUserDetailsService cud, JwtRequestFilter jwtFilter) {
+    public SpringSecurityConfig(CustomUserDetailsService cud, JwtRequestFilter jwtFilter, PasswordEncoder passwordEncoder) {
         this.customUserDetailsService = cud;
         this.jwtRequestFilter = jwtFilter;
+        this.passwordEncoder = passwordEncoder;
     }
-
-
-    // PasswordEncoderBean. Deze kun je overal in je applicatie injecteren waar nodig.
-    // Je kunt dit ook in een aparte configuratie klasse zetten.
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 
     // Authenticatie met customUserDetailsService en passwordEncoder
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         var auth = new DaoAuthenticationProvider();
-        auth.setPasswordEncoder(passwordEncoder);
-        auth.setUserDetailsService(customUserDetailsService);
+        auth.setPasswordEncoder(this.passwordEncoder);
+        auth.setUserDetailsService(this.customUserDetailsService);
         return new ProviderManager(auth);
     }
-
-
 
     // Authorizatie met jwt
     @Bean
@@ -79,11 +70,11 @@ public class SpringSecurityConfig {
                                         .requestMatchers(HttpMethod.DELETE, "/ci-modules").hasRole("ADMIN")
                                         .requestMatchers(HttpMethod.POST, "/wall-brackets").hasRole("ADMIN")
                                         .requestMatchers(HttpMethod.DELETE, "/wall-brackets").hasRole("ADMIN")
+                                        .requestMatchers(HttpMethod.GET, "/users/{username}").authenticated()
                                         .requestMatchers(HttpMethod.GET, "/**").hasRole("USER")
-                                        /*TODO voeg de antmatchers toe voor admin(post en delete) en user (overige)*/
                                         .requestMatchers("/authenticated").authenticated()
-                                        .requestMatchers("/authenticate").permitAll()/*alleen dit punt mag toegankelijk zijn voor niet ingelogde gebruikers*/
-                                        .anyRequest().denyAll() /*Deze voeg je altijd als laatste toe, om een default beveiliging te hebben voor eventuele vergeten endpoints of endpoints die je later toevoegt. */
+                                        .requestMatchers("/authenticate").permitAll()  /*alleen dit punt mag toegankelijk zijn voor niet ingelogde gebruikers*/
+                                        .anyRequest().denyAll()                          /*Deze voeg je altijd als laatste toe, om een default beveiliging te hebben voor eventuele vergeten endpoints of endpoints die je later toevoegt. */
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

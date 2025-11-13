@@ -3,8 +3,11 @@ package nl.benzelinsky.techiteasybackend.controllers;
 import nl.benzelinsky.techiteasybackend.dtos.UserInputDto;
 import nl.benzelinsky.techiteasybackend.dtos.UserOutputDto;
 import nl.benzelinsky.techiteasybackend.exceptions.BadRequestException;
+import nl.benzelinsky.techiteasybackend.models.User;
 import nl.benzelinsky.techiteasybackend.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -32,13 +35,14 @@ public class UserController {
     }
 
     @GetMapping(value = "/{username}")
-    public ResponseEntity<UserOutputDto> getUser(@PathVariable("username") String username) {
-
-        UserOutputDto optionalUser = userService.getUser(username);
-
-
-        return ResponseEntity.ok().body(optionalUser);
-
+    public ResponseEntity<UserOutputDto> getUser(@PathVariable("username") String username, @AuthenticationPrincipal UserDetails userDetails) {
+        if (username.equals(userDetails.getUsername())) {
+            UserOutputDto optionalUser = userService.getUser(username);
+            return ResponseEntity.ok().body(optionalUser);
+        }
+        else {
+            throw new BadRequestException("You are only authorized to view your own user profile.");
+        }
     }
 
     @PostMapping(value = "")
@@ -81,7 +85,7 @@ public class UserController {
             return ResponseEntity.noContent().build();
         }
         catch (Exception ex) {
-            throw new BadRequestException();
+            throw new BadRequestException("You are not authorized to add roles.");
         }
     }
 

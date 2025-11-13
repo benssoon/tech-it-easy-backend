@@ -32,10 +32,10 @@ VALUES ('big ONE',
         10);
 
 INSERT INTO users (username, password, enabled, email)
-VALUES ('ben', '1234', true, 'ben@techiteasy.nl'),
-        ('ellen', '1234', true, 'ellen@techiteasy.nl'),
-        ('bob', '1234', true, 'bob@techiteasy.nl'),
-        ('saskia', '1234', true, 'saskia@techiteasy.nl');
+VALUES ('ben', '$2a$12$5CZNfchW.KoDGIf0/8SMpeHfRU.Qlki28RUCYddJhWqzBJ7mLCcIe', true, 'ben@techiteasy.nl'),
+        ('ellen', '$2a$12$5CZNfchW.KoDGIf0/8SMpeHfRU.Qlki28RUCYddJhWqzBJ7mLCcIe', true, 'ellen@techiteasy.nl'),
+        ('bob', '$2a$12$5CZNfchW.KoDGIf0/8SMpeHfRU.Qlki28RUCYddJhWqzBJ7mLCcIe', true, 'bob@techiteasy.nl'),
+        ('saskia', '$2a$12$5CZNfchW.KoDGIf0/8SMpeHfRU.Qlki28RUCYddJhWqzBJ7mLCcIe', true, 'saskia@techiteasy.nl');
 
 INSERT INTO roles (username, role)
 VALUES ('ben', 'ROLE_ADMIN'),
