@@ -36,12 +36,10 @@ INSERT INTO users (
                    password,
                    enabled,
                    email)
-VALUES ('ben',
-        '1234',
-        true,
-        'ben@techiteasy.nl');
+VALUES (('ben', '1234', true, 'ben@techiteasy.nl')
+       ('ellen', '1234', true, 'ellen@techiteasy.nl'));
 
 INSERT INTO roles (username,
-                         role)
-VALUES ('ben',
-        'ADMIN')
+                   role)
+VALUES (('ben', 'ROLE_ADMIN'),
+        ('ellen', 'ROLE_USER'))
