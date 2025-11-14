@@ -30,3 +30,16 @@ VALUES ('big ONE',
         true,
         20,
         10);
+
+INSERT INTO users (username, password, enabled, email)
+VALUES ('ben', '$2a$12$5CZNfchW.KoDGIf0/8SMpeHfRU.Qlki28RUCYddJhWqzBJ7mLCcIe', true, 'ben@techiteasy.nl'),
+        ('ellen', '$2a$12$5CZNfchW.KoDGIf0/8SMpeHfRU.Qlki28RUCYddJhWqzBJ7mLCcIe', true, 'ellen@techiteasy.nl'),
+        ('bob', '$2a$12$5CZNfchW.KoDGIf0/8SMpeHfRU.Qlki28RUCYddJhWqzBJ7mLCcIe', true, 'bob@techiteasy.nl'),
+        ('saskia', '$2a$12$5CZNfchW.KoDGIf0/8SMpeHfRU.Qlki28RUCYddJhWqzBJ7mLCcIe', true, 'saskia@techiteasy.nl');
+
+INSERT INTO roles (username, role)
+VALUES ('ben', 'ROLE_ADMIN'),
+        ('ben', 'ROLE_USER'),
+        ('ellen', 'ROLE_USER'),
+        ('bob', 'ROLE_USER'),
+        ('saskia', 'ROLE_USER');
